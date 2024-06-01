@@ -15,6 +15,7 @@ Este projeto inclui testes unitários para verificar o funcionamento correto das
 python -m unittest test_roteiro_estudos.py
 
 # Os testes verificam várias funcionalidades, como a adição de entrada ao roteiro, cálculo do tempo estudado e salvamento correto do roteiro em arquivos .txt.
+```
 
 ## Pré-requisitos
 Python 3.x instalado em seu computador.
