@@ -7,6 +7,15 @@ Este é um script em Python para ajudar a organizar seu roteiro de estudos. Ele 
 * Calcular e exibir o tempo total estudado.
 * Salvar os registros de estudo em arquivos .txt nomeados de acordo com a matéria estudada.
 
+## Testes Unitários
+
+Este projeto inclui testes unitários para verificar o funcionamento correto das funcionalidades fornecidas. Os testes estão localizados no arquivo `test_roteiro_estudos.py` e podem ser executados usando o seguinte comando:
+
+```bash
+python -m unittest test_roteiro_estudos.py
+
+# Os testes verificam várias funcionalidades, como a adição de entrada ao roteiro, cálculo do tempo estudado e salvamento correto do roteiro em arquivos .txt.
+
 ## Pré-requisitos
 Python 3.x instalado em seu computador.
 Como Usar
