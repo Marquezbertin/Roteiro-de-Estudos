@@ -1,4 +1,6 @@
 import datetime
+import tkinter as tk
+from tkinter import messagebox
 
 def capturar_horario_atual():
     return datetime.datetime.now()
@@ -22,18 +24,7 @@ def salvar_roteiro_txt(roteiro):
                     arquivo.write("-------------------\n\n")
         print(f"Roteiro salvo em {nome_arquivo}")
 
-def adicionar_entrada(roteiro):
-    input("Pressione Enter para marcar o início do estudo...")
-    data_inicio = capturar_horario_atual()
-    print(f"Estudo iniciado em: {data_inicio.strftime('%Y-%m-%d %H:%M:%S')}")
-    
-    materia = input("Digite a matéria ou assunto: ")
-    anotacoes = input("Digite suas anotações, dúvidas ou comentários: ")
-    
-    input("Pressione Enter para marcar o término do estudo...")
-    data_fim = capturar_horario_atual()
-    print(f"Estudo terminado em: {data_fim.strftime('%Y-%m-%d %H:%M:%S')}")
-    
+def adicionar_entrada(roteiro, materia, anotacoes, data_inicio, data_fim):
     tempo_estudado = calcular_tempo_estudado(data_inicio, data_fim)
     
     entrada = {
@@ -61,25 +52,70 @@ def mostrar_roteiro(roteiro):
         print(f"Anotações: {entrada['Anotações']}")
         print("-------------------\n")
 
-def main():
+def iniciar_interface():
     roteiro = []
+    data_inicio = None
+
+    def iniciar_estudo():
+        nonlocal data_inicio
+        data_inicio = capturar_horario_atual()
+        lbl_status.config(text=f"Estudo iniciado em: {data_inicio.strftime('%Y-%m-%d %H:%M:%S')}")
     
-    while True:
-        print("1. Adicionar entrada ao roteiro")
-        print("2. Mostrar roteiro")
-        print("3. Salvar roteiro em arquivo txt e sair")
-        
-        opcao = input("Escolha uma opção: ")
-        
-        if opcao == '1':
-            adicionar_entrada(roteiro)
-        elif opcao == '2':
-            mostrar_roteiro(roteiro)
-        elif opcao == '3':
-            salvar_roteiro_txt(roteiro)
-            break
+    def pausar_estudo():
+        nonlocal data_inicio
+        if data_inicio:
+            data_fim = capturar_horario_atual()
+            materia = entry_materia.get()
+            anotacoes = entry_anotacoes.get("1.0", tk.END).strip()
+            adicionar_entrada(roteiro, materia, anotacoes, data_inicio, data_fim)
+            lbl_status.config(text=f"Estudo pausado em: {data_fim.strftime('%Y-%m-%d %H:%M:%S')}")
+            data_inicio = None
         else:
-            print("Opção inválida. Tente novamente.")
+            messagebox.showwarning("Aviso", "O estudo não foi iniciado.")
+    
+    def encerrar_estudo():
+        nonlocal data_inicio
+        if data_inicio:
+            data_fim = capturar_horario_atual()
+            materia = entry_materia.get()
+            anotacoes = entry_anotacoes.get("1.0", tk.END).strip()
+            adicionar_entrada(roteiro, materia, anotacoes, data_inicio, data_fim)
+            lbl_status.config(text=f"Estudo encerrado em: {data_fim.strftime('%Y-%m-%d %H:%M:%S')}")
+            data_inicio = None
+        else:
+            messagebox.showwarning("Aviso", "O estudo não foi iniciado.")
+    
+    def salvar_e_sair():
+        salvar_roteiro_txt(roteiro)
+        root.destroy()
+
+    root = tk.Tk()
+    root.title("Roteiro de Estudos")
+
+    tk.Label(root, text="Matéria/Assunto:").grid(row=0, column=0, padx=10, pady=5)
+    entry_materia = tk.Entry(root)
+    entry_materia.grid(row=0, column=1, padx=10, pady=5)
+
+    tk.Label(root, text="Anotações:").grid(row=1, column=0, padx=10, pady=5)
+    entry_anotacoes = tk.Text(root, height=10, width=40)
+    entry_anotacoes.grid(row=1, column=1, padx=10, pady=5)
+
+    btn_iniciar = tk.Button(root, text="Iniciar Estudo", command=iniciar_estudo)
+    btn_iniciar.grid(row=2, column=0, padx=10, pady=5)
+
+    btn_pausar = tk.Button(root, text="Pausar Estudo", command=pausar_estudo)
+    btn_pausar.grid(row=2, column=1, padx=10, pady=5)
+
+    btn_encerrar = tk.Button(root, text="Encerrar Estudo", command=encerrar_estudo)
+    btn_encerrar.grid(row=3, column=0, padx=10, pady=5)
+
+    btn_salvar = tk.Button(root, text="Salvar e Sair", command=salvar_e_sair)
+    btn_salvar.grid(row=3, column=1, padx=10, pady=5)
+
+    lbl_status = tk.Label(root, text="Status: Aguardando início do estudo...")
+    lbl_status.grid(row=4, column=0, columnspan=2, padx=10, pady=5)
+
+    root.mainloop()
 
 if __name__ == "__main__":
-    main()
+    iniciar_interface()
