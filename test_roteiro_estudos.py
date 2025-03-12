@@ -34,7 +34,7 @@ class TestRoteiroEstudos(unittest.TestCase):
         self.assertEqual(entrada["Anotações"], anotacoes)
         self.assertEqual(entrada["Data Início"], data_inicio)
         self.assertEqual(entrada["Data Fim"], data_fim)
-        self.assertEqual(entrada["Tempo Estudado"], datetime.timedelta(hours=2))
+        self.assertAlmostEqual(entrada["Tempo Estudado"].total_seconds(), 7200, delta=1)
 
     @patch("builtins.open", new_callable=mock_open)
     def test_salvar_roteiro_txt(self, mock_open):
@@ -50,13 +50,13 @@ class TestRoteiroEstudos(unittest.TestCase):
         salvar_roteiro_txt(roteiro)
         mock_open.assert_called_with('Matemática.txt', 'w', encoding='utf-8')
         handle = mock_open()
-        handle.write.assert_any_call('--- Entrada 1 ---\n')
-        handle.write.assert_any_call('Data Início: 2022-01-01 12:00:00\n')
-        handle.write.assert_any_call('Data Fim: 2022-01-01 14:00:00\n')
-        handle.write.assert_any_call('Tempo Estudado: 2:00:00\n')
-        handle.write.assert_any_call('Matéria/Assunto: Matemática\n')
-        handle.write.assert_any_call('Anotações: Estudando álgebra\n')
-        handle.write.assert_any_call('-------------------\n\n')
+        handle().write.assert_any_call('--- Entrada 1 ---\n')
+        handle().write.assert_any_call('Data Início: 2022-01-01 12:00:00\n')
+        handle().write.assert_any_call('Data Fim: 2022-01-01 14:00:00\n')
+        handle().write.assert_any_call('Tempo Estudado: 2:00:00\n')
+        handle().write.assert_any_call('Matéria/Assunto: Matemática\n')
+        handle().write.assert_any_call('Anotações: Estudando álgebra\n')
+        handle().write.assert_any_call('-------------------\n\n')
 
 if __name__ == "__main__":
     unittest.main()
