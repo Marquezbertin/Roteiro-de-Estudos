@@ -1,6 +1,6 @@
 import unittest
 import datetime
-from unittest.mock import patch
+from unittest.mock import patch, mock_open
 from roteiro_estudos import (
     adicionar_entrada,
     calcular_tempo_estudado,
@@ -36,7 +36,7 @@ class TestRoteiroEstudos(unittest.TestCase):
         self.assertEqual(entrada["Data Fim"], data_fim)
         self.assertEqual(entrada["Tempo Estudado"], datetime.timedelta(hours=2))
 
-    @patch("builtins.open", unittest.mock.mock_open())
+    @patch("builtins.open", new_callable=mock_open)
     def test_salvar_roteiro_txt(self, mock_open):
         roteiro = [
             {
