@@ -1,6 +1,6 @@
 cff-version: 1.2.0
-message: "Se vocÃª usar este software, cite-o como abaixo."
-title: "O Roteiro de Estudos ├® um script Python que organiza e registra sess├Áes de estudo, capturando automaticamente hor├írios de in├¡cio e t├®rmino, permitindo entrada personalizada de mat├®rias e anota├º├Áes. "
+message: "Se você usar este software, cite-o como abaixo."
+title: "O Roteiro de Estudos é um script Python que organiza e registra sessões de estudo, capturando automaticamente horários de início e término, permitindo entrada personalizada de matérias e anotações."
 authors:
   - family-names: Marquez
     given-names: Bruno Bertin
